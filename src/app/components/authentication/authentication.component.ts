@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Http} from '@angular/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {APIcallService} from '../../services/apicall.service';
+import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {catchError} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -21,7 +21,7 @@ export class AuthenticationComponent implements OnInit {
   constructor(
     private http: Http,
     private formBuilder: FormBuilder,
-    private userService: APIcallService,
+    private userService: UserService,
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({

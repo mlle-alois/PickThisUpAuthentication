@@ -2,16 +2,13 @@ import {Injectable} from '@angular/core';
 import {config} from '../../config/pickthisup.config';
 import {Http} from '@angular/http';
 import {userModel} from '../models/user.model';
-import {catchError} from "rxjs/operators";
-import {HttpErrorResponse} from "@angular/common/http";
-import {throwError} from "rxjs";
 
 export const BASIC_USER_TYPE_ID = 3;
 
 @Injectable({
   providedIn: 'root'
 })
-export class APIcallService {
+export class UserService {
 
   constructor(private http: Http) {
   }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {userModel} from '../../models/user.model';
 import {Router} from '@angular/router';
-import {APIcallService} from '../../services/apicall.service';
+import {UserService} from '../../services/user.service';
 import {catchError} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: APIcallService,
+    private userService: UserService,
     private router: Router
   ) {
     this.registerForm = this.fb.group({

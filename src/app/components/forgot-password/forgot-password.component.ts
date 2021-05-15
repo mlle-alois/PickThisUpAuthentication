@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Http} from "@angular/http";
-import {APIcallService} from "../../services/apicall.service";
+import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private http: Http,
     private formBuilder: FormBuilder,
-    private userService: APIcallService,
+    private userService: UserService,
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
