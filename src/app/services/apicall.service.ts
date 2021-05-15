@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {config} from '../../config/cosmic.config';
+import {config} from '../../config/pickthisup.config';
 import {Http} from '@angular/http';
 import {userModel} from '../models/user.model';
 import {catchError} from "rxjs/operators";
