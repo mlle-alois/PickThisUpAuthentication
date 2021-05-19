@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
 
 @Component({
   selector: 'app-forgot-password',
@@ -71,8 +72,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('currentUser') || localStorage.getItem('googleUser')) {
-      this.router.navigate(['dashboard'])
+    if (localStorage.getItem('currentToken')) {
+      window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+      //this.router.navigate(['dashboard'])
     }
   }
 }

@@ -8,12 +8,12 @@ import {HttpModule} from '@angular/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {RegisterComponent} from './components/register/register.component';
 import {NgxLoadingModule} from 'ngx-loading';
 import {NgModule} from "@angular/core";
 import {ButtonModule} from "primeng/button";
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +21,9 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     AuthenticationComponent,
     HeaderComponent,
     FooterComponent,
-    DashboardComponent,
     RegisterComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

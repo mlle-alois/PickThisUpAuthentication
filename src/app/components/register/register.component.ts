@@ -6,6 +6,7 @@ import {UserService} from '../../services/user.service';
 import {catchError} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
+import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
 
 @Component({
   selector: 'app-register',
@@ -59,7 +60,9 @@ export class RegisterComponent implements OnInit {
           return;
         } else if (jsondata.session && jsondata.session.token) {
           localStorage.setItem('currentToken', JSON.stringify(jsondata.session.token));
-          this.router.navigate(['dashboard']);
+          //TODO diriger vers admin ou utilisateur selon
+          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+          //this.router.navigate(['dashboard']);
         } else {
           this.message = "An error was occured";
         }

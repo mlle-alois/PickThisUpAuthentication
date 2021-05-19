@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {catchError} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
+import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
 
 @Component({
   selector: 'app-authentication',
@@ -53,7 +54,9 @@ export class AuthenticationComponent implements OnInit {
           return;
         } else if (jsondata.token) {
           localStorage.setItem('currentToken', JSON.stringify(jsondata.token));
-          this.router.navigate(['dashboard']);
+
+          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+          //this.router.navigate(['dashboard']);
         } else {
           this.message = "An error was occured";
         }
@@ -69,8 +72,9 @@ export class AuthenticationComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('currentUser') || localStorage.getItem('googleUser')) {
-      this.router.navigate(['dashboard'])
+    if (localStorage.getItem('currentToken')) {
+      window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+      //this.router.navigate(['dashboard'])
     }
   }
 }
