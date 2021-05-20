@@ -7,6 +7,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
+import {UserType} from "../../../enum/user-type";
 
 @Component({
   selector: 'app-forgot-password',
@@ -30,20 +31,18 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  //TODO le message à l'utilisateur ne se met pas à jour
-  // surement à cause de l'asyncrone
-  public handleError(error: HttpErrorResponse) {
-    this.loading = "";
-    this.message = error.statusText;
-    return throwError(`Backend returned code ${error.status}, body was: ${error.statusText}`);
-  }
-
   resetPassword() {
     this.message = "";
     this.loading = "loading...";
     const credentials = this.loginForm.value;
     this.userService.getUserByMail(credentials)
-      .pipe(catchError(this.handleError))
+      .pipe(catchError(err => {
+        if (err.status) {
+          this.loading = "";
+          this.message = err.statusText;
+        }
+        return throwError(err);
+      }))
       .subscribe((result) => {
         this.loading = "";
         this.returnedData = result;
@@ -63,6 +62,33 @@ export class ForgotPasswordComponent implements OnInit {
       });
   }
 
+  redirectUserToApplication() {
+    this.userService.getUserByToken(getCurrentTokenWithoutQuotes())
+        .pipe(catchError(err => {
+          if (err.status) {
+            this.loading = "";
+            this.message = err.statusText;
+          }
+          return throwError(err);
+        })).subscribe((result) => {
+      const returnedData: any = result;
+      if (!returnedData.typeId) {
+        this.message = this.returnedData.statusText;
+        return;
+      } else if (returnedData.typeId) {
+        const userType = returnedData.typeId;
+        if(userType === UserType.Developer || userType === UserType.Adminisator || userType === UserType.SuperAdministrator) {
+          window.location.href = `http://localhost:4201?token=${getCurrentTokenWithoutQuotes()}`;
+        }
+        else {
+          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+        }
+      } else {
+        this.message = "An error was occured";
+      }
+    });
+  }
+
   registerCall() {
     this.router.navigate(['register'])
   }
@@ -73,8 +99,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem('currentToken')) {
-      window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
-      //this.router.navigate(['dashboard'])
+      this.redirectUserToApplication();
     }
   }
 }

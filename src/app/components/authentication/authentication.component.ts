@@ -4,77 +4,101 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../services/user.service';
 import {Router} from '@angular/router';
 import {catchError} from "rxjs/operators";
-import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
 import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
+import {UserType} from "../../../enum/user-type";
 
 @Component({
-  selector: 'app-authentication',
-  templateUrl: './authentication.component.html',
-  styleUrls: ['./authentication.component.css']
+    selector: 'app-authentication',
+    templateUrl: './authentication.component.html',
+    styleUrls: ['./authentication.component.css']
 })
 export class AuthenticationComponent implements OnInit {
-  loginForm: FormGroup;
-  returnedData: any;
-  message: any;
-  loading = "";
+    loginForm: FormGroup;
+    returnedData: any;
+    message: any;
+    loading = "";
 
-  constructor(
-    private http: Http,
-    private formBuilder: FormBuilder,
-    private userService: UserService,
-    private router: Router
-  ) {
-    this.loginForm = this.formBuilder.group({
-      'email': ['', [Validators.email, Validators.required]],
-      'password': ['', Validators.required],
-    });
-  }
-
-  //TODO le message à l'utilisateur ne se met pas à jour
-  // surement à cause de l'asyncrone
-  public handleError(error: HttpErrorResponse) {
-    this.loading = "";
-    this.message = error.statusText;
-    return throwError(`Backend returned code ${error.status}, body was: ${error.statusText}`);
-  }
-
-  login() {
-    this.message = "";
-    this.loading = "loading...";
-    const credentials = this.loginForm.value;
-    this.userService.login(credentials)
-      .pipe(catchError(this.handleError))
-      .subscribe((result) => {
-        this.loading = "";
-        this.returnedData = result;
-        const jsondata = JSON.parse(this.returnedData._body);
-        if (!this.returnedData.ok) {
-          this.message = this.returnedData.statusText;
-          return;
-        } else if (jsondata.token) {
-          localStorage.setItem('currentToken', JSON.stringify(jsondata.token));
-
-          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
-          //this.router.navigate(['dashboard']);
-        } else {
-          this.message = "An error was occured";
-        }
-      });
-  }
-
-  registerCall() {
-    this.router.navigate(['register'])
-  }
-
-  forgotPasswordCall() {
-    this.router.navigate(['forgot-password'])
-  }
-
-  ngOnInit() {
-    if (localStorage.getItem('currentToken')) {
-      window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
-      //this.router.navigate(['dashboard'])
+    constructor(
+        private http: Http,
+        private formBuilder: FormBuilder,
+        private userService: UserService,
+        private router: Router
+    ) {
+        this.loginForm = this.formBuilder.group({
+            'email': ['', [Validators.email, Validators.required]],
+            'password': ['', Validators.required],
+        });
     }
-  }
+
+    login() {
+        this.message = "";
+        this.loading = "loading...";
+        const credentials = this.loginForm.value;
+        this.userService.login(credentials)
+            .pipe(catchError(err => {
+                if (err.status) {
+                    this.loading = "";
+                    this.message = err.statusText;
+                }
+                return throwError(err);
+            }))
+            .subscribe((result) => {
+                this.loading = "";
+                this.returnedData = result;
+                console.log(this.returnedData._body)
+                const jsondata = JSON.parse(this.returnedData._body);
+                console.log(jsondata)
+                if (!this.returnedData.ok) {
+                    this.message = this.returnedData.statusText;
+                    return;
+                } else if (jsondata.token) {
+                    localStorage.setItem('currentToken', JSON.stringify(jsondata.token));
+                    this.redirectUserToApplication();
+                } else {
+                    this.message = "An error was occured";
+                }
+            });
+    }
+
+    redirectUserToApplication() {
+        this.userService.getUserByToken(getCurrentTokenWithoutQuotes())
+            .pipe(catchError(err => {
+                if (err.status) {
+                    this.loading = "";
+                    this.message = err.statusText;
+                }
+                return throwError(err);
+            })).subscribe((result) => {
+                const returnedData: any = result;
+                if (!returnedData.typeId) {
+                    this.message = this.returnedData.statusText;
+                    return;
+                } else if (returnedData.typeId) {
+                    const userType = returnedData.typeId;
+                    if(userType === UserType.Developer || userType === UserType.Adminisator || userType === UserType.SuperAdministrator) {
+                        window.location.href = `http://localhost:4201?token=${getCurrentTokenWithoutQuotes()}`;
+                    }
+                    else {
+                        window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+                    }
+                } else {
+                    this.message = "An error was occured";
+                }
+            });
+    }
+
+    registerCall() {
+        this.router.navigate(['register'])
+    }
+
+    forgotPasswordCall() {
+        this.router.navigate(['forgot-password'])
+    }
+
+    ngOnInit() {
+        if (localStorage.getItem('currentToken')) {
+            this.redirectUserToApplication();
+        }
+    }
 }

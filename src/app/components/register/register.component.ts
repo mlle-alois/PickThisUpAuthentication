@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
-import {userModel} from '../../models/user.model';
+import {UserModel} from '../../models/user.model';
 import {Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {catchError} from "rxjs/operators";
 import {HttpErrorResponse} from "@angular/common/http";
 import {throwError} from "rxjs";
 import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
+import {UserType} from "../../../enum/user-type";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ import {getCurrentTokenWithoutQuotes} from "../../Utils/TokenUtils";
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup; //declare the reactive forms group for register
   passwordMatched: boolean = false;
-  userModel = new userModel();
+  userModel = new UserModel();
   returnedData: any;
   message: any;
   loading = "";
@@ -37,20 +38,18 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  //TODO le message à l'utilisateur ne se met pas à jour
-  // surement à cause de l'asyncrone
-  public handleError(error: HttpErrorResponse) {
-    this.loading = "";
-    this.message = error.statusText;
-    return throwError(`Backend returned code ${error.status}, body was: ${error.statusText}`);
-  }
-
   register() {
     this.message = "";
     this.loading = "loading...";
     const data = this.registerForm.value;
     this.userService.register(data)
-      .pipe(catchError(this.handleError))
+      .pipe(catchError(err => {
+        if (err.status) {
+          this.loading = "";
+          this.message = err.statusText;
+        }
+        return throwError(err);
+      }))
       .subscribe(res => {
         this.loading = "";
         this.returnedData = res;
@@ -60,13 +59,38 @@ export class RegisterComponent implements OnInit {
           return;
         } else if (jsondata.session && jsondata.session.token) {
           localStorage.setItem('currentToken', JSON.stringify(jsondata.session.token));
-          //TODO diriger vers admin ou utilisateur selon
-          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
-          //this.router.navigate(['dashboard']);
+          this.redirectUserToApplication();
         } else {
           this.message = "An error was occured";
         }
       })
+  }
+
+  redirectUserToApplication() {
+    this.userService.getUserByToken(getCurrentTokenWithoutQuotes())
+        .pipe(catchError(err => {
+          if (err.status) {
+            this.loading = "";
+            this.message = err.statusText;
+          }
+          return throwError(err);
+        })).subscribe((result) => {
+      const returnedData: any = result;
+      if (!returnedData.typeId) {
+        this.message = this.returnedData.statusText;
+        return;
+      } else if (returnedData.typeId) {
+        const userType = returnedData.typeId;
+        if(userType === UserType.Developer || userType === UserType.Adminisator || userType === UserType.SuperAdministrator) {
+          window.location.href = `http://localhost:4201?token=${getCurrentTokenWithoutQuotes()}`;
+        }
+        else {
+          window.location.href = `http://localhost:4202?token=${getCurrentTokenWithoutQuotes()}`;
+        }
+      } else {
+        this.message = "An error was occured";
+      }
+    });
   }
 
   checkPasswordMatch(password) {
@@ -82,6 +106,9 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('currentToken')) {
+      this.redirectUserToApplication();
+    }
   }
 
 }
