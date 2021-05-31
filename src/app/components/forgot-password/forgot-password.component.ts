@@ -51,7 +51,6 @@ export class ForgotPasswordComponent implements OnInit {
           this.message = this.returnedData.statusText;
           return;
         } else if (jsondata.mail) {
-          console.log(jsondata.mail)
           //TODO envoyer le mail de réinitialisation
           this.message = "La fonction de réinitialisation de mot de passe n'est pas encore disponible"
           /*localStorage.setItem('currentToken', JSON.stringify(jsondata.token));

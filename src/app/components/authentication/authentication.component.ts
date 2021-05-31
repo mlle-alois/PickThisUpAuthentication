@@ -46,9 +46,7 @@ export class AuthenticationComponent implements OnInit {
             .subscribe((result) => {
                 this.loading = "";
                 this.returnedData = result;
-                console.log(this.returnedData._body)
                 const jsondata = JSON.parse(this.returnedData._body);
-                console.log(jsondata)
                 if (!this.returnedData.ok) {
                     this.message = this.returnedData.statusText;
                     return;
