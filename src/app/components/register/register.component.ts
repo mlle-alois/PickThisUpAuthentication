@@ -40,7 +40,7 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.message = "";
-    this.loading = "loading...";
+    this.loading = "chargement...";
     const data = this.registerForm.value;
     this.userService.register(data)
       .pipe(catchError(err => {

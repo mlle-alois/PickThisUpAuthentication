@@ -33,7 +33,7 @@ export class AuthenticationComponent implements OnInit {
 
     login() {
         this.message = "";
-        this.loading = "loading...";
+        this.loading = "chargement...";
         const credentials = this.loginForm.value;
         this.userService.login(credentials)
             .pipe(catchError(err => {

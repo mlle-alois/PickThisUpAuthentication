@@ -33,7 +33,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   resetPassword() {
     this.message = "";
-    this.loading = "loading...";
+    this.loading = "chargement...";
     const credentials = this.loginForm.value;
     this.userService.getUserByMail(credentials)
       .pipe(catchError(err => {
