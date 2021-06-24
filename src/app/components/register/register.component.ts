@@ -15,7 +15,7 @@ import {UserType} from "../../../enum/user-type";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup; //declare the reactive forms group for register
+  registerForm: FormGroup;
   passwordMatched: boolean = false;
   userModel = new UserModel();
   returnedData: any;
@@ -34,7 +34,6 @@ export class RegisterComponent implements OnInit {
       'confirmPassword': ['', Validators.required],
       'email': ['', [Validators.email, Validators.required]],
       'mobile': ['', [Validators.minLength(10), Validators.required, Validators.pattern('0[0-9]{9}')]]
-
     });
   }
 

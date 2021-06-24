@@ -5,12 +5,14 @@ import { AuthenticationComponent } from './components/authentication/authenticat
 import { RegisterComponent } from './components/register/register.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import {LogoutComponent} from "./components/logout/logout.component";
+import {ContactSupportComponent} from "./components/contact-support/contact-support.component";
 
 const routes: Routes = [
   { path: '', component: AuthenticationComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'logout', component: LogoutComponent }
+  { path: 'logout', component: LogoutComponent },
+  { path: 'contact-support', component: ContactSupportComponent }
 ];
 
 @NgModule({

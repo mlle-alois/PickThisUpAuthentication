@@ -25,6 +25,10 @@
   font-weight: bold;
 }
 
+.help-block {
+  color: red
+}
+
 .title {
   font-size: 1.9rem;
   color: #5E5E5E;
