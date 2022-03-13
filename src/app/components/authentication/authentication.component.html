@@ -4,7 +4,6 @@
       <!-- login form -->
       <div class="card card-body center auth-form">
         <p class="font-weight-normal title">Connexion</p>
-        <p class="subtitle">Connectez-vous pour pouvoir participer aux événements</p>
         <form [formGroup]="loginForm" (ngSubmit)="login()">
           <fieldset class="form-group">
             <input type="email" placeholder="Email" class="form-control" formControlName="email" required>

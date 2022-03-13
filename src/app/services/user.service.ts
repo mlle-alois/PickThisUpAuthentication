@@ -27,7 +27,6 @@ export class UserService {
             password: data.password,
             name: data.fullName,
             firstname: data.firstName,
-            phoneNumber: data.mobile,
             typeId: BASIC_USER_TYPE_ID
         })
     }

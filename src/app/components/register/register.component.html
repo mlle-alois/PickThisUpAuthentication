@@ -4,8 +4,7 @@
       <!-- register form -->
       <div class="card card-body center auth-form">
 
-        <p class="font-weight-normal title">Devenir un Clean Walker !</p>
-        <p class="subtitle">Rejoignez les clean walkers partout dans le monde !</p>
+        <p class="font-weight-normal title">Inscription</p>
         <form [formGroup]="registerForm" (ngSubmit)="register()">
 
           <fieldset class="form-group">
@@ -55,16 +54,6 @@
               *ngIf="!registerForm.controls.confirmPassword.valid && registerForm.controls.confirmPassword.errors['required'] && registerForm.controls.confirmPassword.touched && !registerForm.controls.confirmPassword.errors['minlength'] "
               class="help-block">Confirmation de mot de passe obligatoire</span>
             <span class="help-block" *ngIf="!passwordMatched">Les mots de passe ne correspondent pas</span>
-          </fieldset>
-
-          <fieldset class="form-group">
-            <input type="text" placeholder="Numéro de téléphone" class="form-control" formControlName="mobile" maxlength="10" required>
-            <span
-              *ngIf="!registerForm.controls.mobile.valid && registerForm.controls.mobile.errors['required'] && registerForm.controls.mobile.touched"
-              class="help-block">Numéro de téléphone obligatoire<br/></span>
-            <span
-              *ngIf="!registerForm.controls.mobile.valid && (!registerForm.controls.mobile.errors['minlength']  || !registerForm.controls.mobile.errors['required'] || !registerForm.controls.mobile.errors['pattern']) && registerForm.controls.mobile.touched"
-              class="help-block">Le numéro de téléphone doit contenir 10 digitaux et commencer par 0</span>
           </fieldset>
 
           <p class="subtitle">En vous inscrivant vous acceptez les <a href="FAIRE UNE PAGE CONDITION GENERALES">termes généraux</a></p>
