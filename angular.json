@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PickThisUpAuthentication": {
+    "PimpMyCode": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/PickThisUpAuthentication",
+            "outputPath": "dist/PimpMyCode",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -68,18 +68,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "PickThisUpAuthentication:build"
+            "browserTarget": "PimpMyCode:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "PickThisUpAuthentication:build:production"
+              "browserTarget": "PimpMyCode:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "PickThisUpAuthentication:build"
+            "browserTarget": "PimpMyCode:build"
           }
         },
         "test": {
@@ -116,16 +116,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "PickThisUpAuthentication:serve"
+            "devServerTarget": "PimpMyCode:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "PickThisUpAuthentication:serve:production"
+              "devServerTarget": "PimpMyCode:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "PickThisUpAuthentication"
+  "defaultProject": "PimpMyCode"
 }

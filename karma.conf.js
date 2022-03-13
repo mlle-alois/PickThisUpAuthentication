@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/PickThisUpAuthentication'),
+      dir: require('path').join(__dirname, './coverage/PimpMyCode'),
       subdir: '.',
       reporters: [
         { type: 'html' },

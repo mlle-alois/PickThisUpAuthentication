@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {TicketModel} from "../models/ticket.model";
 import {Priority} from "../enums/priority";
 import {HttpService} from "./http.service";
-import {config} from "../../config/pickthisup.config";
+import {config} from "../../config/pimpmycode.config";
 
 @Injectable({
   providedIn: 'root'
