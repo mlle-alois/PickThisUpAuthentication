@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {config} from '../../config/pimpmycode.config';
+import {config} from '../../config/pickthisup.config';
 import {UserModel} from '../models/user.model';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Http} from "@angular/http";

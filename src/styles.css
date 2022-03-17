@@ -4,10 +4,10 @@
 
 .logo-div {
   float: left;
-  background: url(assets/pimp-my-code-logo.png) no-repeat top;
+  background: url(assets/pickThisUpLogo.PNG) no-repeat top;
   background-size: 135px;
-  width: 128px;
-  height: 128px;
+  width: 135px;
+  height: 135px;
   margin-right: 20px;
 }
 
@@ -16,12 +16,12 @@
   background-size: cover;
   border-radius: 0;
   margin-bottom: 0;
-  background-color: #474545;
+  background-color: #F5F5F5;
 }
 
 .jumbotron h1 {
   font-size: 2.5rem;
-  color: #F5F5F5;
+  color: #474545;
   font-weight: bold;
 }
 
