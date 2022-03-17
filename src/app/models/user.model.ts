@@ -6,5 +6,6 @@ export class UserModel {
   email: string;
   password: string;
   confirmPassword: string;
+  mobile: string;
 
 }
